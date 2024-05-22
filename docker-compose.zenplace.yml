@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+  postgresql:
+    image: sameersbn/postgresql:9.6-2
+    env_file:
+      - postgresql.env
+    volumes:
+      - /srv/docker/redmine/postgresql:/var/lib/postgresql
+    restart: always
+
+  redmine:
+    image: sameersbn/redmine:3.4.4-2
+    depends_on:
+      - postgresql
+    environment:
+      - TZ=Asia/Tokyo
+    env_file:
+      - redmine.env
+    ports:
+      - "10083:80"
+    volumes:
+      - /srv/docker/redmine/redmine:/home/redmine/data
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 10084:3000    # localhost only by default
+    links:
+      - mongo:mongo
+      - elasticsearch:elasticsearch
+    depends_on:
+      - mongo
+      - elasticsearch
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/growi
+      - ELASTICSEARCH_URI=http://elasticsearch:9200/growi
+    env_file:
+      - growi.env
+    entrypoint: "dockerize
+                  -wait tcp://mongo:27017
+                  -wait tcp://elasticsearch:9200
+                  -timeout 60s
+                  /docker-entrypoint.sh"
+    command: ["yarn migrate && node -r dotenv-flow/config --expose_gc dist/server/app.js"]
+
+    restart: unless-stopped
+    volumes:
+      - growi_data:/data
+
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    volumes:
+      - mongo_configdb:/data/configdb
+      - mongo_db:/data/db
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch/v8
+      dockerfile: ./Dockerfile
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"  # increase amount if you have enough memory
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true # CVE-2021-44228 mitigation for Elasticsearch <= 6.8.20/7.16.0
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: unless-stopped
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - ./elasticsearch/v8/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+volumes:
+  growi_data:
+    driver_opts:
+      type: none
+      device: /srv/docker/wiki/growi_data
+      o: bind
+  mongo_configdb:
+    driver_opts:
+      type: none
+      device: /srv/docker/wiki/mongo_configdb
+      o: bind
+  mongo_db:
+    driver_opts:
+      type: none
+      device: /srv/docker/wiki/mongo_db
+      o: bind
+  es_data:
+    driver_opts:
+      type: none
+      device: /srv/docker/wiki/es_data
+      o: bind
