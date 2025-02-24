@@ -25,7 +25,7 @@ services:
       # - FORCE_WIKI_MODE='private'   # activate this line to force wiki private mode
 
     entrypoint: "/docker-entrypoint.sh"
-    command: ["npm run migrate && node -r dotenv-flow/config --expose_gc dist/server/app.js"]
+    command: ["yarn migrate && node -r dotenv-flow/config --expose_gc dist/server/app.js"]
 
     restart: unless-stopped
     volumes:
@@ -45,7 +45,7 @@ services:
 
   elasticsearch:
     build:
-      context: ./elasticsearch/v7
+      context: ./elasticsearch/v8
       dockerfile: ./Dockerfile
     environment:
       - bootstrap.memory_lock=true
@@ -58,7 +58,7 @@ services:
     restart: unless-stopped
     volumes:
       - es_data:/usr/share/elasticsearch/data
-      - ./elasticsearch/v7/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/v8/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 10s
