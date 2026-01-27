@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app-1:
-    image: weseek/growi:7
+    image: growilabs/growi:7
     ports:
       - 127.0.0.1:3001:3000
     links:
@@ -24,7 +24,7 @@ services:
       - growi_data_1:/data
 
   app-2:
-    image: weseek/growi:7
+    image: growilabs/growi:7
     ports:
       - 127.0.0.1:3002:3000
     links:
@@ -46,7 +46,7 @@ services:
       - growi_data_2:/data
 
   app-3:
-    image: weseek/growi:7
+    image: growilabs/growi:7
     ports:
       - 127.0.0.1:3003:3000
     links:
@@ -68,7 +68,7 @@ services:
       - growi_data_3:/data
 
   mongo:
-    image: mongo:6.0
+    image: mongo:8.0
     restart: unless-stopped
     volumes:
       - mongo_configdb:/data/configdb
@@ -81,7 +81,7 @@ services:
 
   elasticsearch:
     build:
-      context: ./elasticsearch/v8
+      context: ./elasticsearch/v9
       dockerfile: ./Dockerfile
     environment:
       - bootstrap.memory_lock=true
@@ -94,7 +94,7 @@ services:
     restart: unless-stopped
     volumes:
       - es_data:/usr/share/elasticsearch/data
-      - ./elasticsearch/v8/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/v9/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 10s

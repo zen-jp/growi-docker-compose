@@ -18,7 +18,7 @@ Requirements
 
 0. Clone repos
     ```
-    git clone https://github.com/weseek/growi-docker-compose.git growi
+    git clone https://github.com/growilabs/growi-docker-compose.git growi
     cd growi
     ```
 1. Copy `docker-compose.override.yml` to local repos root

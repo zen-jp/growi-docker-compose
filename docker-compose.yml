@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    image: weseek/growi:7
+    image: growilabs/growi:7
     ports:
       - 127.0.0.1:3000:3000    # localhost only by default
     links:
@@ -16,6 +16,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/growi
       - ELASTICSEARCH_URI=http://elasticsearch:9200/growi
+      - BULK_EXPORT_PDF_CONVERTER_URI=http://pdf-converter:3010
       - PASSWORD_SEED=changeme
       # - FILE_UPLOAD=mongodb   # activate this line if you use MongoDB GridFS rather than AWS
       # - FILE_UPLOAD=local     # activate this line if you use local storage of server rather than AWS
@@ -30,9 +31,12 @@ services:
     restart: unless-stopped
     volumes:
       - growi_data:/data
+      - page_bulk_export_tmp:/tmp/page-bulk-export
 
   mongo:
-    image: mongo:6.0
+    image: mongo:8.0
+    # For MongoDB 6.x
+    # image: mongo:6.0
     restart: unless-stopped
     volumes:
       - mongo_configdb:/data/configdb
@@ -45,7 +49,9 @@ services:
 
   elasticsearch:
     build:
-      context: ./elasticsearch/v8
+      context: ./elasticsearch/v9
+      # For Elasticsearch 8.x
+      # context: ./elasticsearch/v8
       dockerfile: ./Dockerfile
     environment:
       - bootstrap.memory_lock=true
@@ -58,15 +64,24 @@ services:
     restart: unless-stopped
     volumes:
       - es_data:/usr/share/elasticsearch/data
-      - ./elasticsearch/v8/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/v9/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      # For Elasticsearch 8.x
+      #- ./elasticsearch/v8/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 10s
       timeout: 5s
       retries: 6
 
+  pdf-converter:
+    image: growilabs/pdf-converter:1
+    restart: unless-stopped
+    volumes:
+      - page_bulk_export_tmp:/tmp/page-bulk-export
+
 volumes:
   growi_data:
   mongo_configdb:
   mongo_db:
   es_data:
+  page_bulk_export_tmp:

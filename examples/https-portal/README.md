@@ -9,7 +9,7 @@ Install and Start
 ### Clone repos and copy docker-compose.override.yml
 
 ```bash
-git clone https://github.com/weseek/growi-docker-compose.git growi
+git clone https://github.com/growilabs/growi-docker-compose.git growi
 cd growi
 cp examples/https-portal/docker-compose.override.yml .
 ```

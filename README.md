@@ -1,7 +1,7 @@
 growi-docker-compose
 =====================
 
-Quick start [GROWI](https://github.com/weseek/growi) with docker-compose
+Quick start [GROWI](https://github.com/growilabs/growi) with docker-compose
 
 ![GROWI-x-dockercompose](https://user-images.githubusercontent.com/1638767/38307565-105956e2-384f-11e8-8534-b1128522d68d.png)
 
@@ -23,7 +23,7 @@ Start
 ------
 
 ```bash
-git clone https://github.com/weseek/growi-docker-compose.git growi
+git clone https://github.com/growilabs/growi-docker-compose.git growi
 cd growi
 docker-compose up
 ```
@@ -80,7 +80,7 @@ docker compose stop
 
 # remove current container and images
 docker compose rm app
-docker rmi weseek/growi:7
+docker rmi growilabs/growi:7
 
 # rebuild app container image
 git pull
@@ -111,15 +111,15 @@ Followings are **disabled** because they are overwritten by `docker-compose.yml`
 
 Change `docker-compose.yml` if you need.
 
-Others conform to [weseek/growi](https://github.com/weseek/growi#environment-variables)
+Others conform to [growilabs/growi](https://github.com/growilabs/growi#environment-variables)
 
 
 More convenient Examples
 -------------------------
 
-* [Multiple sites](https://github.com/weseek/growi-docker-compose/tree/master/examples/multi-app)
-* [HTTPS(with Let's Encrypt) proxy integration](https://github.com/weseek/growi-docker-compose/tree/master/examples/https-portal)
-* [Backup MongoDB data](https://github.com/weseek/growi-docker-compose/tree/master/examples/backup-mongodb-data)
+* [Multiple sites](https://github.com/growilabs/growi-docker-compose/tree/master/examples/multi-app)
+* [HTTPS(with Let's Encrypt) proxy integration](https://github.com/growilabs/growi-docker-compose/tree/master/examples/https-portal)
+* [Backup MongoDB data](https://github.com/growilabs/growi-docker-compose/tree/master/examples/backup-mongodb-data)
 
 
 Documentation
@@ -131,7 +131,7 @@ Documentation
 Issues
 ------
 
-If you have any problems or questions about this image, please contact us through a [GitHub issue](https://github.com/weseek/growi-docker-compose/issues).
+If you have any problems or questions about this image, please contact us through a [GitHub issue](https://github.com/growilabs/growi-docker-compose/issues).
 
 
 License
