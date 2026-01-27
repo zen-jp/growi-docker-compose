@@ -38,6 +38,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/growi
       - ELASTICSEARCH_URI=http://elasticsearch:9200/growi
+      - BULK_EXPORT_PDF_CONVERTER_URI=http://pdf-converter:3010
     env_file:
       - growi.env
     entrypoint: "/docker-entrypoint.sh"
