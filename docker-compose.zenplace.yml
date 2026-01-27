@@ -24,7 +24,7 @@ services:
     restart: always
 
   app:
-    image: weseek/growi:7
+    image: growilabs/growi:7
     ports:
       - 10084:3000    # localhost only by default
     links:
@@ -81,6 +81,12 @@ services:
       timeout: 5s
       retries: 6
 
+  pdf-converter:
+    image: growilabs/pdf-converter:1
+    restart: unless-stopped
+    volumes:
+      - page_bulk_export_tmp:/tmp/page-bulk-export
+
 volumes:
   growi_data:
     driver_opts:
@@ -101,4 +107,9 @@ volumes:
     driver_opts:
       type: none
       device: /srv/docker/wiki/es_data
+      o: bind
+  page_bulk_export_tmp:
+    driver_opts:
+      type: none
+      device: /srv/docker/wiki/pdf_bulk_export_tmp
       o: bind
