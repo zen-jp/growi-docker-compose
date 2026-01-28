@@ -24,7 +24,7 @@ services:
     restart: always
 
   app:
-    image: growilabs/growi:7.2
+    image: growilabs/growi:7.1.9
     ports:
       - 10084:3000    # localhost only by default
     links:
