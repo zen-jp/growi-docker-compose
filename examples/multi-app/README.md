@@ -6,16 +6,10 @@ This example enables the execution of three GROWI sites.
 Install and Start
 ------------------
 
-### Build Image
-
+### Replace docker-compose.yml
 ```bash
 git clone https://github.com/growilabs/growi-docker-compose.git growi
 cd growi
-docker build -t growimulti_app .
-```
-
-### Replace docker-compose.yml
-```bash
 cp examples/multi-app/docker-compose.yml .
 ```
 
@@ -52,14 +46,13 @@ docker-compose stop
 docker-compose rm app-1
 docker-compose rm app-2
 docker-compose rm app-3
-docker rmi growimulti_app
 docker rmi growilabs/growi:7
 ```
 
-### Rebuild Image
+### Pull latest changes
 ```bash
 git pull
-docker build -t growimulti_app .
+cp examples/multi-app/docker-compose.yml .
 ```
 
 ### Start
